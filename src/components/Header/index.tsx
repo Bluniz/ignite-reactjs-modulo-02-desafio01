@@ -10,9 +10,11 @@ import { Product } from "../../types";
 const Header = (): JSX.Element => {
   const { cart } = useCart();
 
-  const cartSize = [...Array.from(new Set(cart))].length;
+  const set = new Set();
 
-  console.log(cartSize);
+  const uniques = cart.filter((item) => !set.has(item.id) && set.add(item.id));
+
+  const cartSize = uniques.length;
 
   return (
     <Container>
