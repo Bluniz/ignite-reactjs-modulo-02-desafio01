@@ -90,6 +90,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   }: UpdateProductAmount) => {
     try {
       // TODO
+
+      if (amount <= 0) return;
     } catch {
       // TODO
     }
