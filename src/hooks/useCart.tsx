@@ -37,15 +37,31 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       const response = await api.get(`/products?id=${productId}`);
       const responseStock = await api.get(`/stock?id=${productId}`);
 
-      const qtdOfExistsCartInCart = cart.reduce((acc, item) => {
-        if (response.data[0].id === item.id) {
-          acc += 1;
-        }
-        return acc;
-      }, 0);
+      const productExistingInCart = cart.find(
+        (product) => product.id === productId
+      );
+      const QtdOfProductExistingInCart = productExistingInCart
+        ? productExistingInCart.amount
+        : 0;
 
-      if (qtdOfExistsCartInCart < responseStock.data[0].amount) {
-        const cartCopy = [...cart, response.data[0]];
+      if (QtdOfProductExistingInCart < responseStock.data[0].amount) {
+        let cartCopy: Product[] = [];
+
+        if (productExistingInCart) {
+          cartCopy = cart.map((item) => {
+            if (item.id === productId) {
+              return {
+                ...item,
+                amount: item.amount + 1,
+              };
+            }
+
+            return item;
+          });
+        } else {
+          cartCopy = [...cart, { ...response.data[0], amount: 1 }];
+        }
+
         localStorage.setItem("@RocketShoes:cart", JSON.stringify(cartCopy));
         setCart(cartCopy);
       } else {
@@ -59,8 +75,12 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const removeProduct = (productId: number) => {
     try {
       // TODO
+      console.log("atual", cart);
+      const newCart = cart.filter((item) => item.id !== productId);
+      localStorage.setItem("@RocketShoes:cart", JSON.stringify(newCart));
+      setCart(newCart);
     } catch {
-      // TODO
+      toast.error("Erro na remoção do produto");
     }
   };
 

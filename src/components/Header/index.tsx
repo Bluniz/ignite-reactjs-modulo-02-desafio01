@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { MdShoppingBasket } from "react-icons/md";
 
@@ -11,9 +10,9 @@ const Header = (): JSX.Element => {
 
   const set = new Set();
 
-  const uniques = cart.filter((item) => !set.has(item.id) && set.add(item.id));
+  //const uniques = cart.filter((item) => !set.has(item.id) && set.add(item.id));
 
-  const cartSize = uniques.length;
+  const cartSize = cart.length;
 
   return (
     <Container>
