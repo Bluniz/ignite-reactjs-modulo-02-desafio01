@@ -8,7 +8,7 @@ import { useCart } from "../../hooks/useCart";
 const Header = (): JSX.Element => {
   const { cart } = useCart();
 
-  const set = new Set();
+  //const set = new Set();
 
   //const uniques = cart.filter((item) => !set.has(item.id) && set.add(item.id));
 
